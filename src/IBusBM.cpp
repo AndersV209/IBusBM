@@ -115,10 +115,9 @@ void IBusBM::begin(HardwareSerial &serial, int8_t timerid, int8_t rxPin, int8_t 
       // on other architectures we need to use a time
       #if defined(ARDUINO_ARCH_ESP32) 
         hw_timer_t * timer = NULL;
-        timer = timerBegin(timerid, F_CPU / 1000000L, true); // defaults to timer_id = 0; divider=80 (1 ms); countUp = true;
-        timerAttachInterrupt(timer, &onTimer, true); // edge = true
-        timerAlarmWrite(timer, 1000, true);  //1 ms
-        timerAlarmEnable(timer);
+        timer = timerBegin(1000000);
+        timerAttachInterrupt(timer, &onTimer); 
+        timerAlarm(timer, 1000, true, 0);  //1 ms 
       #elif defined(_VARIANT_ARDUINO_STM32_)
         // see https://github.com/stm32duino/wiki/wiki/HardwareTimer-library
         HardwareTimer *stimer_t = new HardwareTimer(timerid);
